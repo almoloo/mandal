@@ -1,0 +1,141 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Contract {
+  id               String             @id @default(cuid())
+  address          String             @unique
+  chainId          Int
+  name             String?
+  verified         Boolean            @default(false)
+  sourceCode       String?
+  abi              Json?
+  compilerVersion  String?
+  optimizationUsed Boolean?
+  runs             Int?
+  constructorArgs  String?
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime           @updatedAt
+  creatorAddress   String?
+  contractBalance  String?
+  connectedDapps   DAppContract[]
+  analyses         SecurityAnalysis[]
+  userReports      UserReport[]
+
+  @@index([address, chainId])
+  @@map("contracts")
+}
+
+model DApp {
+  id                 String         @id @default(cuid())
+  url                String         @unique
+  domain             String
+  title              String?
+  description        String?
+  verified           Boolean        @default(false)
+  domainAge          DateTime?
+  sslValid           Boolean?
+  isPhishing         Boolean        @default(false)
+  createdAt          DateTime       @default(now())
+  updatedAt          DateTime       @updatedAt
+  connectedContracts DAppContract[]
+  userReports        UserReport[]
+
+  @@index([domain])
+  @@map("dapps")
+}
+
+model DAppContract {
+  id         String   @id @default(cuid())
+  dappId     String
+  contractId String
+  createdAt  DateTime @default(now())
+  contract   Contract @relation(fields: [contractId], references: [id], onDelete: Cascade)
+  dapp       DApp     @relation(fields: [dappId], references: [id], onDelete: Cascade)
+
+  @@unique([dappId, contractId])
+  @@map("dapp_contracts")
+}
+
+model SecurityAnalysis {
+  id               String   @id @default(cuid())
+  contractId       String
+  version          Int      @default(1)
+  riskLevel        String
+  summary          String
+  detailedAnalysis String
+  isHoneypot       Boolean?
+  hasUnlimitedMint Boolean?
+  hasHiddenFees    Boolean?
+  hasBlacklist     Boolean?
+  isUpgradeable    Boolean?
+  ownerCanPause    Boolean?
+  ownerCanDrain    Boolean?
+  functionAnalysis Json?
+  vulnerabilities  Json?
+  externalCalls    Json?
+  aiModel          String
+  analysisTime     Int?
+  createdAt        DateTime @default(now())
+  contract         Contract @relation(fields: [contractId], references: [id], onDelete: Cascade)
+
+  @@index([contractId, version])
+  @@map("security_analyses")
+}
+
+model UserReport {
+  id             String    @id @default(cuid())
+  contractId     String?
+  dappId         String?
+  reportType     String
+  severity       String?
+  title          String
+  description    String
+  userAddress    String?
+  userEmail      String?
+  isVerified     Boolean   @default(false)
+  status         String    @default("PENDING")
+  moderatedAt    DateTime?
+  moderatorNotes String?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+  contract       Contract? @relation(fields: [contractId], references: [id], onDelete: Cascade)
+  dapp           DApp?     @relation(fields: [dappId], references: [id], onDelete: Cascade)
+
+  @@index([contractId])
+  @@index([dappId])
+  @@index([status])
+  @@map("user_reports")
+}
+
+model KnownVulnerability {
+  id             String   @id @default(cuid())
+  name           String
+  description    String
+  severity       String
+  cweId          String?
+  pattern        String
+  recommendation String
+  references     Json?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  @@map("known_vulnerabilities")
+}
+
+model ApiCache {
+  id        String   @id @default(cuid())
+  cacheKey  String   @unique
+  endpoint  String
+  response  Json
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  @@index([cacheKey])
+  @@index([expiresAt])
+  @@map("api_cache")
+}
