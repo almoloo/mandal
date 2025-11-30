@@ -21,7 +21,6 @@ model Contract {
   createdAt        DateTime           @default(now())
   updatedAt        DateTime           @updatedAt
   creatorAddress   String?
-  contractBalance  String?
   connectedDapps   DAppContract[]
   analyses         SecurityAnalysis[]
   userReports      UserReport[]
