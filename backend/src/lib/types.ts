@@ -26,3 +26,58 @@ export interface GetContractSourceCodeResponse {
 	SwarmSource: string;
 	SimilarMatch: string;
 }
+
+export interface GenerateContractAnalysisPromptArgs {
+	id: string;
+	address: string;
+	chainId: number;
+	name: string | null;
+	verified: boolean;
+	sourceCode: string;
+	abi: string;
+	compilerVersion: string | null;
+	optimizationUsed: boolean | null;
+	runs: number | null;
+	constructorArgs: string | null;
+	createdAt: Date;
+	updatedAt: Date;
+	creatorAddress: string | null;
+}
+
+export enum RiskLevel {
+	Low = 'Low',
+	Medium = 'Medium',
+	High = 'High',
+	Critical = 'Critical',
+}
+
+export interface SecurityAnalysisResult {
+	contractId: string;
+	version: number;
+	riskLevel: RiskLevel;
+	summary: string;
+	detailedAnalysis: string;
+	isHoneypot: boolean;
+	hasUnlimitedMint: boolean;
+	hasHiddenFees: boolean;
+	hasBlacklist: boolean;
+	isUpgradeable: boolean;
+	ownerCanPause: boolean;
+	ownerCanDrain: boolean;
+	functionAnalysis: {
+		functionName: string;
+		issues: string[];
+	}[];
+	vulnerabilities: {
+		name: string;
+		description: string;
+		severity: RiskLevel;
+		recommendation: string;
+	}[];
+	externalCalls: {
+		target: string;
+		functionSignature: string;
+	}[];
+	aiModel: string;
+	analysisTime: Date;
+}
