@@ -308,9 +308,6 @@ dapps.get('/', async (c) => {
 							console.log(
 								`[DAPP] Successfully saved analysis for new contract ${address}, analysis ID: ${contractAnalysis.id}`
 							);
-
-							// Delay to avoid rate limiting
-							await delay(2000);
 						} catch (error) {
 							console.error(
 								'[DAPP] Contract analysis failed for',
@@ -348,7 +345,7 @@ dapps.get('/', async (c) => {
 				getDomainWhoisData(domain),
 			]);
 			console.log(
-				`[DAPP] Metadata fetched - Title: ${metadata.title}, Domain Created: ${whoisData.domainCreatedAt}`
+				`[DAPP] Metadata fetched - Title: ${metadata.title}, Domain Age: ${whoisData.domainAge} days`
 			);
 
 			// Create or get DApp in database
@@ -357,14 +354,14 @@ dapps.get('/', async (c) => {
 				update: {
 					title: metadata.title,
 					description: metadata.description,
-					domainCreatedAt: whoisData.domainCreatedAt,
+					domainAge: whoisData.domainAge,
 				},
 				create: {
 					url,
 					domain,
 					title: metadata.title,
 					description: metadata.description,
-					domainCreatedAt: whoisData.domainCreatedAt,
+					domainAge: whoisData.domainAge,
 				},
 			}); // Link contracts to DApp (skip if already linked)
 			if (contractsInfo.length > 0) {

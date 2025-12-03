@@ -9,6 +9,23 @@ const openai = new OpenAI({
 	apiKey: process.env.OPENAI_API_KEY,
 });
 
+// Helper to truncate source code if too large
+function truncateSourceCode(
+	sourceCode: string,
+	maxChars: number = 15000
+): string {
+	if (sourceCode.length <= maxChars) {
+		return sourceCode;
+	}
+
+	const halfMax = Math.floor(maxChars / 2);
+	const start = sourceCode.slice(0, halfMax);
+	const end = sourceCode.slice(-halfMax);
+	return `${start}\n\n... [${
+		sourceCode.length - maxChars
+	} characters omitted for brevity] ...\n\n${end}`;
+}
+
 export function generateAnalysisPrompt(
 	contract: GenerateContractAnalysisPromptArgs
 ): string {
@@ -31,7 +48,7 @@ CONTRACT DETAILS:
 
 SOURCE CODE:
 \`\`\`solidity
-${contract.sourceCode}
+${truncateSourceCode(contract.sourceCode)}
 \`\`\`
 
 ABI:
@@ -89,7 +106,7 @@ Return ONLY valid JSON, no additional text.
 
 export async function analyzeContractWithAI(
 	contract: GenerateContractAnalysisPromptArgs,
-	model: string = 'gpt-4-turbo-preview'
+	model: string = 'gpt-4o'
 ): Promise<Omit<SecurityAnalysisResult, 'contractId' | 'version'>> {
 	const startTime = Date.now();
 

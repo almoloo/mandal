@@ -14,7 +14,7 @@ contracts.get('/', async (c) => {
 			? Number(c.req.query('chainId'))
 			: ChainId.MantleMainnet
 	) as ChainId;
-	const model = c.req.query('model') || 'gpt-4-turbo-preview';
+	const model = c.req.query('model') || 'gpt-4o';
 
 	if (!address) {
 		return c.json(
@@ -160,12 +160,73 @@ contracts.get('/', async (c) => {
 			});
 		}
 
+		// CONTRACT EXISTS IN DATABASE
+		// Check if contract needs analysis (verified but no analysis exists)
+		let analysis = contract.analyses[0] || null;
+
+		if (
+			!analysis &&
+			contract.verified &&
+			contract.sourceCode &&
+			contract.abi
+		) {
+			try {
+				const aiAnalysis = await analyzeContractWithAI(
+					{
+						id: contract.id,
+						address: contract.address,
+						chainId: contract.chainId,
+						name: contract.name,
+						verified: contract.verified,
+						sourceCode: contract.sourceCode,
+						abi: JSON.stringify(contract.abi),
+						compilerVersion: contract.compilerVersion,
+						optimizationUsed: contract.optimizationUsed,
+						runs: contract.runs,
+						constructorArgs: contract.constructorArgs,
+						createdAt: contract.createdAt,
+						updatedAt: contract.updatedAt,
+						creatorAddress: contract.creatorAddress,
+					},
+					model
+				);
+
+				// Save analysis to database
+				analysis = await prisma.securityAnalysis.create({
+					data: {
+						contractId: contract.id,
+						version: 1,
+						riskLevel: aiAnalysis.riskLevel,
+						summary: aiAnalysis.summary,
+						detailedAnalysis: aiAnalysis.detailedAnalysis,
+						isHoneypot: aiAnalysis.isHoneypot,
+						hasUnlimitedMint: aiAnalysis.hasUnlimitedMint,
+						hasHiddenFees: aiAnalysis.hasHiddenFees,
+						hasBlacklist: aiAnalysis.hasBlacklist,
+						isUpgradeable: aiAnalysis.isUpgradeable,
+						ownerCanPause: aiAnalysis.ownerCanPause,
+						ownerCanDrain: aiAnalysis.ownerCanDrain,
+						functionAnalysis: aiAnalysis.functionAnalysis,
+						vulnerabilities: aiAnalysis.vulnerabilities,
+						externalCalls: aiAnalysis.externalCalls,
+						aiModel: aiAnalysis.aiModel,
+						analysisTime: Math.floor(
+							aiAnalysis.analysisTime.getTime()
+						),
+					},
+				});
+			} catch (error) {
+				console.error('AI analysis failed:', error);
+				// Continue without analysis - don't fail the whole request
+			}
+		}
+
 		return c.json({
 			success: true,
 			data: {
 				contract,
 				balance: currentBalance,
-				latestAnalysis: contract.analyses[0] || null,
+				latestAnalysis: analysis,
 				reports: contract.userReports,
 			},
 		});
