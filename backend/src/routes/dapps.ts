@@ -379,10 +379,8 @@ dapps.get('/', async (c) => {
 				});
 
 				const existingContractIds = new Set(
-					existingLinks.map((link) => link.contractId)
-				);
-
-				// Only create links for contracts that aren't already linked
+					existingLinks.map((link: any) => link.contractId)
+				); // Only create links for contracts that aren't already linked
 				const newLinks = contractsInfo
 					.filter((contract) => !existingContractIds.has(contract.id))
 					.map((contract) => ({
@@ -470,7 +468,7 @@ dapps.get('/', async (c) => {
 		let dappAnalysis = null;
 
 		// Prepare contract data for analysis
-		const contractsForAnalysis = dapp.connectedContracts.map((dc) => ({
+		const contractsForAnalysis = dapp.connectedContracts.map((dc: any) => ({
 			address: dc.contract.address,
 			name: dc.contract.name || undefined,
 			verified: dc.contract.verified,
@@ -527,7 +525,9 @@ dapps.get('/', async (c) => {
 					isPhishing: dapp.isPhishing,
 					message: 'Using cached analysis',
 				},
-				contracts: dapp.connectedContracts.map((dc) => dc.contract),
+				contracts: dapp.connectedContracts.map(
+					(dc: any) => dc.contract
+				),
 			},
 		});
 	} catch (error) {
