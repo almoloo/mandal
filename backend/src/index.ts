@@ -11,7 +11,10 @@ const app = new Hono();
 app.use(
 	'*',
 	cors({
-		origin: `extension://${process.env.EXTENSION_ID}`,
+		origin: [
+			`extension://${process.env.EXTENSION_ID}`,
+			`chrome-extension://${process.env.EXTENSION_ID}`,
+		],
 	})
 );
 
