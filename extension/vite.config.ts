@@ -22,4 +22,9 @@ export default defineConfig({
 		},
 	},
 	plugins: [preact(), tailwindcss()],
+	resolve: {
+		alias: {
+			'@': resolve(__dirname, 'src'),
+		},
+	},
 });

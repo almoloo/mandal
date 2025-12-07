@@ -11,9 +11,15 @@
   "dependencies": {
     "@tailwindcss/vite": "^4.1.17",
     "@tanstack/react-query": "^5.90.12",
+    "@untitledui/file-icons": "^0.0.9",
+    "@untitledui/icons": "^0.0.19",
     "chrome-types": "^0.1.392",
     "preact": "^10.27.2",
-    "tailwindcss": "^4.1.17"
+    "react-aria-components": "^1.13.0",
+    "tailwind-merge": "^3.3.1",
+    "tailwindcss": "^4.1.17",
+    "tailwindcss-animate": "^1.0.7",
+    "tailwindcss-react-aria-components": "^2.0.1"
   },
   "devDependencies": {
     "@preact/preset-vite": "^2.10.2",

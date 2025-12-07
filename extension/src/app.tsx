@@ -1,19 +1,38 @@
-import Header from './components/header';
-import { useCurrentTab } from './hooks/useCurrentTab';
-import ExplorerView from './routes/explorer';
+import { useIsFetching } from '@tanstack/react-query';
+import Header from '@/components/header';
+import { useCurrentTab } from '@/hooks/useCurrentTab';
+import ExplorerView from '@/routes/explorer';
+import { useEffect, useState } from 'preact/hooks';
+import Loading from '@/components/loading';
 
 export function App() {
-	const { currentUrlType, currentUrl, chainId } = useCurrentTab();
+	const { currentUrlType } = useCurrentTab();
+	const isFetchingContract = useIsFetching({ queryKey: ['contract'] });
+
+	const [isLoading, setIsLoading] = useState(true);
+
+	useEffect(() => {
+		if (isFetchingContract > 0) {
+			setIsLoading(true);
+		} else {
+			setIsLoading(false);
+		}
+	}, [isFetchingContract]);
+
 	return (
 		<>
 			<Header />
-			<div className="bg-blue-400 text-white">{currentUrlType}</div>
-			<div className="bg-green-400 text-white">{currentUrl}</div>
-			<div className="bg-red-400 text-white">{chainId}</div>
-			{currentUrlType !== 'OTHER' ? (
-				<ExplorerView />
+
+			{isLoading ? (
+				<Loading />
 			) : (
-				<div className="p-4">Unsupported URL</div>
+				<>
+					{currentUrlType !== 'OTHER' ? (
+						<ExplorerView />
+					) : (
+						<div className="p-4">Unsupported URL</div>
+					)}
+				</>
 			)}
 		</>
 	);
