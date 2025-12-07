@@ -1,9 +1,9 @@
 import { useQuery } from '@tanstack/react-query';
-import { useCurrentTab } from '../hooks/useCurrentTab';
-import { getContractAddressFromUrl } from '../lib/utils';
+import { useCurrentTab } from '@/hooks/useCurrentTab';
+import { getContractAddressFromUrl } from '@/lib/utils';
 import { useEffect, useState } from 'preact/hooks';
-import { API_BASE_URL, DEFAULT_AI_MODEL } from '../lib/constants';
-import type { ContractResponse } from '../lib/types';
+import { API_BASE_URL, DEFAULT_AI_MODEL } from '@/lib/constants';
+import type { ContractResponse } from '@/lib/types';
 
 export default function ExplorerView() {
 	const { currentUrl, chainId } = useCurrentTab();
