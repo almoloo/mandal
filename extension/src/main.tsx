@@ -2,6 +2,7 @@ import { createRoot } from 'react-dom/client';
 import './index.css';
 import { App } from './app.tsx';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ThemeProvider } from '@/providers/theme-provider.tsx';
 
 const queryClient = new QueryClient({
 	defaultOptions: {
@@ -17,6 +18,8 @@ const queryClient = new QueryClient({
 
 createRoot(document.getElementById('app')!).render(
 	<QueryClientProvider client={queryClient}>
-		<App />
+		<ThemeProvider>
+			<App />
+		</ThemeProvider>
 	</QueryClientProvider>
 );
