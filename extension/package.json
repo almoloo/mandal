@@ -12,12 +12,15 @@
     "@tailwindcss/vite": "^4.1.17",
     "@tanstack/react-query": "^5.90.12",
     "chrome-types": "^0.1.392",
-    "preact": "^10.27.2",
+    "react": "^19.2.1",
+    "react-dom": "^19.2.1",
     "tailwindcss": "^4.1.17"
   },
   "devDependencies": {
-    "@preact/preset-vite": "^2.10.2",
     "@types/node": "^24.10.1",
+    "@types/react": "^19.2.7",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^5.1.2",
     "typescript": "~5.9.3",
     "vite": "^7.2.4"
   }

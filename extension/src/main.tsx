@@ -1,4 +1,4 @@
-import { render } from 'preact';
+import { createRoot } from 'react-dom/client';
 import './index.css';
 import { App } from './app.tsx';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
@@ -15,9 +15,8 @@ const queryClient = new QueryClient({
 	},
 });
 
-render(
+createRoot(document.getElementById('app')!).render(
 	<QueryClientProvider client={queryClient}>
 		<App />
-	</QueryClientProvider>,
-	document.getElementById('app')!
+	</QueryClientProvider>
 );

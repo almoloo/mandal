@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'preact/hooks';
+import { useEffect, useState } from 'react';
 import { checkUrl, getChainIdFromUrlType } from '../lib/utils';
 import type { UrlType } from '../lib/types';
 

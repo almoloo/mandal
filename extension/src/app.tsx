@@ -2,7 +2,7 @@ import { useIsFetching } from '@tanstack/react-query';
 import Header from '@/components/header';
 import { useCurrentTab } from '@/hooks/useCurrentTab';
 import ExplorerView from '@/routes/explorer';
-import { useEffect, useState } from 'preact/hooks';
+import { useEffect, useState } from 'react';
 import Loading from '@/components/loading';
 
 export function App() {
