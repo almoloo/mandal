@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { useCurrentTab } from '@/hooks/useCurrentTab';
+import { useCurrentTab } from '@/hooks/use-current-tab';
 import { getContractAddressFromUrl } from '@/lib/utils';
 import { useEffect, useState } from 'react';
 import { API_BASE_URL, DEFAULT_AI_MODEL } from '@/lib/constants';

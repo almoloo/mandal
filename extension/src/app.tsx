@@ -1,6 +1,6 @@
 import { useIsFetching } from '@tanstack/react-query';
 import Header from '@/components/header';
-import { useCurrentTab } from '@/hooks/useCurrentTab';
+import { useCurrentTab } from '@/hooks/use-current-tab';
 import ExplorerView from '@/routes/explorer';
 import { useEffect, useState } from 'react';
 import Loading from '@/components/loading';
