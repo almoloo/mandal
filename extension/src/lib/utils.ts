@@ -40,3 +40,29 @@ export function getContractAddressFromUrl(url: string): string | null {
 	}
 	return null;
 }
+
+export function getExplorerUrl(chainId: number, address: string): string {
+	switch (chainId) {
+		case 5000:
+			return `https://mantlescan.xyz/address/${address}`;
+		case 5003:
+			return `https://sepolia.mantlescan.xyz/address/${address}`;
+		default:
+			return '#';
+	}
+}
+
+export function isTestnet(chainId: number): boolean {
+	const testnetChainIds = [5003];
+	return testnetChainIds.includes(chainId);
+}
+
+export function formatAddress(address: string): string {
+	if (!address) return 'Unknown';
+	return `${address.slice(0, 6)}...${address.slice(-4)}`;
+}
+
+export function formatBalance(balance: string): string {
+	const etherValue = parseFloat(balance) / 1e18;
+	return etherValue.toFixed(4);
+}

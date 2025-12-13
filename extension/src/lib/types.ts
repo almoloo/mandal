@@ -3,7 +3,14 @@ export type UrlType =
 	| 'MANTLE_SEPOLIA_EXPLORER'
 	| 'OTHER';
 
-export type RiskLevel = 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL';
+export const RiskLevel = {
+	Low: 'Low',
+	Medium: 'Medium',
+	High: 'High',
+	Critical: 'Critical',
+} as const;
+
+export type RiskLevel = (typeof RiskLevel)[keyof typeof RiskLevel];
 
 export interface Contract {
 	id: string;

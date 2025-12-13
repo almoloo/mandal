@@ -4,10 +4,33 @@ import { getContractAddressFromUrl } from '@/lib/utils';
 import { useEffect, useState } from 'react';
 import { API_BASE_URL, DEFAULT_AI_MODEL } from '@/lib/constants';
 import type { ContractResponse } from '@/lib/types';
+import OverviewBox from '@/components/overview-box';
+import type { Key } from 'react-aria-components';
+import { Tabs } from '@/components/ui/application/tabs/tabs';
+import OverviewTab from '@/components/overview-tab';
+import AnalysisTab from '@/components/analysis-tab';
+import ReportsTab from '@/components/reports-tab';
+import { Clock } from '@untitledui/icons';
+
+const tabs = [
+	{
+		id: 'overview',
+		label: 'Overview',
+	},
+	{
+		id: 'analysis',
+		label: 'AI Analysis',
+	},
+	{
+		id: 'reports',
+		label: 'User Reports',
+	},
+];
 
 export default function ExplorerView() {
 	const { currentUrl, chainId } = useCurrentTab();
 	const [address, setAddress] = useState<string | null>(null);
+	const [selectedTabIndex, setSelectedTabIndex] = useState<Key>('overview');
 	// const address = getContractAddressFromUrl(currentUrl || '');
 
 	useEffect(() => {
@@ -17,7 +40,7 @@ export default function ExplorerView() {
 		}
 	}, [currentUrl]);
 
-	const { data, dataUpdatedAt, isLoading } = useQuery({
+	const { data } = useQuery({
 		queryKey: ['contract', address],
 		queryFn: async () => {
 			// Fetch contract data from API
@@ -39,16 +62,56 @@ export default function ExplorerView() {
 		enabled: !!address && !!chainId,
 	});
 
+	if (!data) {
+		return <div className="p-4">Loading contract data...</div>;
+	}
+
 	return (
-		<div>
-			ExplorerView
-			<div>{currentUrl}</div>
-			<div>{chainId}</div>
-			{isLoading && <div>Loading...</div>}
-			<pre>
-				<code>{data?.latestAnalysis?.summary}</code>
-			</pre>
-			<div>{dataUpdatedAt}</div>
+		<div className="flex flex-col grow gap-3 px-2">
+			<OverviewBox
+				contractName={data?.contract.name}
+				verified={data.contract.verified}
+				createdAt={new Date(data.contract.createdAt)}
+				creatorAddress={data.contract.creatorAddress}
+				chainId={data.contract.chainId}
+				balance={data.balance}
+			/>
+
+			<Tabs
+				selectedKey={selectedTabIndex}
+				onSelectionChange={setSelectedTabIndex}
+				className="w-max"
+			>
+				<Tabs.List
+					type="underline"
+					items={tabs}
+				>
+					{(tab) => <Tabs.Item {...tab} />}
+				</Tabs.List>
+			</Tabs>
+
+			{selectedTabIndex === 'overview' && (
+				<OverviewTab
+					riskLevel={data.latestAnalysis?.riskLevel}
+					summary={data.latestAnalysis?.summary}
+				/>
+			)}
+
+			{selectedTabIndex === 'analysis' && <AnalysisTab />}
+
+			{selectedTabIndex === 'reports' && <ReportsTab />}
+
+			<div className="flex items-center gap-1 text-xs mt-auto text-slate-600 pt-3 pb-2">
+				<Clock size={14} />
+				<span>Last analyzed:</span>
+				<time
+					dateTime={new Date(
+						data.latestAnalysis?.createdAt!
+					).toISOString()}
+				>
+					{new Date(data.latestAnalysis?.createdAt!).toLocaleString()}
+				</time>
+			</div>
 		</div>
 	);
 }
