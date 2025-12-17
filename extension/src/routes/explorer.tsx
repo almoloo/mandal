@@ -10,7 +10,7 @@ import { Tabs } from '@/components/ui/application/tabs/tabs';
 import OverviewTab from '@/components/overview-tab';
 import AnalysisTab from '@/components/analysis-tab';
 import ReportsTab from '@/components/reports-tab';
-import { Clock } from '@untitledui/icons';
+import { Clock, InfoCircle } from '@untitledui/icons';
 
 const tabs = [
 	{
@@ -67,7 +67,7 @@ export default function ExplorerView() {
 	}
 
 	return (
-		<div className="flex flex-col grow gap-3 px-2">
+		<div className="flex flex-col grow gap-3 px-3">
 			<OverviewBox
 				contractName={data?.contract.name}
 				verified={data.contract.verified}
@@ -80,7 +80,7 @@ export default function ExplorerView() {
 			<Tabs
 				selectedKey={selectedTabIndex}
 				onSelectionChange={setSelectedTabIndex}
-				className="w-max"
+				className="w-full"
 			>
 				<Tabs.List
 					type="underline"
@@ -97,20 +97,33 @@ export default function ExplorerView() {
 				/>
 			)}
 
-			{selectedTabIndex === 'analysis' && <AnalysisTab />}
+			{selectedTabIndex === 'analysis' && (
+				<AnalysisTab analysis={data.latestAnalysis!} />
+			)}
 
 			{selectedTabIndex === 'reports' && <ReportsTab />}
 
-			<div className="flex items-center gap-1 text-xs mt-auto text-slate-600 pt-3 pb-2">
-				<Clock size={14} />
-				<span>Last analyzed:</span>
-				<time
-					dateTime={new Date(
-						data.latestAnalysis?.createdAt!
-					).toISOString()}
-				>
-					{new Date(data.latestAnalysis?.createdAt!).toLocaleString()}
-				</time>
+			<div className="flex flex-col gap-1 pt-3 pb-2 mt-auto text-xs text-slate-600">
+				<div className="flex items-center gap-1">
+					<InfoCircle size={14} />
+					<span>Analyzed by:</span>
+					<span className="font-mono">
+						{data.latestAnalysis?.aiModel}
+					</span>
+				</div>
+				<div className="flex items-center gap-1">
+					<Clock size={14} />
+					<span>Last analyzed:</span>
+					<time
+						dateTime={new Date(
+							data.latestAnalysis?.createdAt!
+						).toISOString()}
+					>
+						{new Date(
+							data.latestAnalysis?.createdAt!
+						).toLocaleString()}
+					</time>
+				</div>
 			</div>
 		</div>
 	);
