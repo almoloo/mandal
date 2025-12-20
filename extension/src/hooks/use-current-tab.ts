@@ -32,37 +32,5 @@ export function useCurrentTab() {
 		}
 	}, [currentUrl]);
 
-	// useEffect(() => {
-	// 	getCurrentTab();
-
-	// 	const messageListener = (
-	// 		message: {
-	// 			type: string;
-	// 			url: string;
-	// 			chainId: number | null;
-	// 		},
-	// 		_sender: chrome.runtime.MessageSender,
-	// 		_sendResponse: (response?: any) => void
-	// 	): boolean | undefined => {
-	// 		if (message.type === 'TAB_UPDATED') {
-	// 			setCurrentUrl(message.url);
-	// 			setCurrentUrlType(checkUrl(message.url));
-	// 			if (checkUrl(message.url) !== 'OTHER') {
-	// 				const chainId = getChainIdFromUrlType(
-	// 					checkUrl(message.url)
-	// 				);
-	// 				setChainId(chainId);
-	// 			}
-	// 		}
-	// 		return undefined;
-	// 	};
-
-	// 	chrome.runtime.onMessage.addListener(messageListener);
-
-	// 	return () => {
-	// 		chrome.runtime.onMessage.removeListener(messageListener);
-	// 	};
-	// }, []);
-
 	return { currentUrl, currentUrlType, chainId };
 }

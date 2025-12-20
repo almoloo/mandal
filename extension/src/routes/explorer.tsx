@@ -101,7 +101,9 @@ export default function ExplorerView() {
 				<AnalysisTab analysis={data.latestAnalysis!} />
 			)}
 
-			{selectedTabIndex === 'reports' && <ReportsTab />}
+			{selectedTabIndex === 'reports' && (
+				<ReportsTab reports={data.reports} />
+			)}
 
 			<div className="flex flex-col gap-1 pt-3 pb-2 mt-auto text-xs text-slate-600">
 				<div className="flex items-center gap-1">

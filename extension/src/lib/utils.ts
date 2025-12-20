@@ -66,3 +66,29 @@ export function formatBalance(balance: string): string {
 	const etherValue = parseFloat(balance) / 1e18;
 	return etherValue.toFixed(4);
 }
+
+export async function getUserIdentifier(): Promise<string> {
+	// Try to get Chrome email first
+	try {
+		const userInfo = await chrome.identity.getProfileUserInfo({
+			accountStatus: 'ANY',
+		});
+
+		if (userInfo.email) {
+			return userInfo.email;
+		}
+	} catch (error) {
+		console.warn('Failed to get Chrome user info:', error);
+	}
+
+	// Fallback to stored UUID
+	const stored = await chrome.storage.local.get('userId');
+	let userId = stored.userId;
+
+	if (!userId) {
+		userId = crypto.randomUUID();
+		await chrome.storage.local.set({ userId });
+	}
+
+	return userId;
+}

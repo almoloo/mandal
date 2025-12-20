@@ -95,3 +95,29 @@ export interface ContractResponse {
 	latestAnalysis: ContractAnalysis | null;
 	reports: ContractReport[];
 }
+
+export const ReportTypes = {
+	SCAM: 'SCAM',
+	PHISHING: 'PHISHING',
+	HONEYPOT: 'HONEYPOT',
+	RUG_PULL: 'RUG_PULL',
+	SECURITY: 'SECURITY',
+	BUG: 'BUG',
+	SUSPICIOUS: 'SUSPICIOUS',
+	MALICIOUS: 'MALICIOUS',
+	OTHER: 'OTHER',
+} as const;
+
+export type ReportType = (typeof ReportTypes)[keyof typeof ReportTypes];
+
+export const ReportTypeLabels: Record<ReportType, string> = {
+	SCAM: 'Scam',
+	PHISHING: 'Phishing Attempt',
+	HONEYPOT: 'Honeypot',
+	RUG_PULL: 'Rug Pull',
+	SECURITY: 'Security Vulnerability',
+	BUG: 'Bug Report',
+	SUSPICIOUS: 'Suspicious Activity',
+	MALICIOUS: 'Malicious Contract',
+	OTHER: 'Other',
+};

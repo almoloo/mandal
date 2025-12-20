@@ -9,12 +9,14 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@react-stately/utils": "^3.10.8",
     "@tailwindcss/vite": "^4.1.17",
     "@tanstack/react-query": "^5.90.12",
     "@untitledui/icons": "^0.0.19",
     "chrome-types": "^0.1.392",
     "clsx": "^2.1.1",
     "react": "^19.2.1",
+    "react-aria": "^3.44.0",
     "react-aria-components": "^1.13.0",
     "react-dom": "^19.2.1",
     "tailwind-merge": "^3.3.1",

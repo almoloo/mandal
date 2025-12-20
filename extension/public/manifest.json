@@ -10,5 +10,11 @@
 	"action": {
 		"default_popup": "index.html"
 	},
-	"permissions": ["activeTab", "storage", "sidePanel", "tabs"]
+	"permissions": [
+		"activeTab",
+		"storage",
+		"tabs",
+		"identity",
+		"identity.email"
+	]
 }
