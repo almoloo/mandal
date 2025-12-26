@@ -8,8 +8,10 @@ import { getContractAddressFromUrl, getUserIdentifier } from '@/lib/utils';
 import { useCurrentTab } from '@/hooks/use-current-tab';
 import { API_BASE_URL } from '@/lib/constants';
 import { Loading02 } from '@untitledui/icons';
+import { useQueryClient } from '@tanstack/react-query';
 
 export default function ReportForm() {
+	const queryClient = useQueryClient();
 	const [isOpen, setIsOpen] = useState(false);
 	const [address, setAddress] = useState<string | null>(null);
 	const [error, setError] = useState<string | null>(null);
@@ -60,6 +62,9 @@ export default function ReportForm() {
 				setIsOpen(false);
 				form.reset();
 				setSubmitSuccess(true);
+				await queryClient.invalidateQueries({
+					queryKey: ['contract', address],
+				});
 			} else {
 				const errorData = await response.json();
 				throw new Error(errorData.error || 'Failed to submit report');

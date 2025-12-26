@@ -7,11 +7,11 @@ import { ThemeProvider } from '@/providers/theme-provider.tsx';
 const queryClient = new QueryClient({
 	defaultOptions: {
 		queries: {
-			staleTime: Infinity,
-			gcTime: Infinity,
-			refetchOnWindowFocus: false,
-			refetchOnMount: false,
-			refetchOnReconnect: false,
+			staleTime: 3 * 24 * 60 * 60 * 1000, // 3 DAYS
+			gcTime: 6 * 24 * 60 * 60 * 1000, // 6 DAYS
+			refetchOnWindowFocus: true,
+			refetchOnMount: true,
+			refetchOnReconnect: true,
 		},
 	},
 });

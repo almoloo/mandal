@@ -1,5 +1,6 @@
 import ReportForm from '@/components/reports/report-form';
 import { type ContractReport } from '@/lib/types';
+import ReportItem from '@/components/reports/report-item';
 
 export default function ReportsTab({ reports }: { reports: ContractReport[] }) {
 	return (
@@ -13,24 +14,14 @@ export default function ReportsTab({ reports }: { reports: ContractReport[] }) {
 						No reports available.
 					</p>
 				) : (
-					<ul className="flex flex-col gap-3">
+					<div className="flex flex-col gap-3">
 						{reports.map((report, index) => (
-							<li
+							<ReportItem
 								key={index}
-								className="border p-3 rounded-md"
-							>
-								<p className="text-sm leading-relaxed">
-									{report.userEmail}
-								</p>
-								<p className="text-xs text-slate-500 mt-1">
-									Reported on:{' '}
-									{new Date(
-										report.createdAt
-									).toLocaleDateString()}
-								</p>
-							</li>
+								report={report}
+							/>
 						))}
-					</ul>
+					</div>
 				)}
 			</div>
 		</div>

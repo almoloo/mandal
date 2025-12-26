@@ -108,6 +108,7 @@ reviews.post('/', async (c) => {
 			title,
 			description,
 			userAddress,
+			status: 'APPROVED',
 		};
 
 		// Find or create contract
