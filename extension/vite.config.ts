@@ -17,7 +17,6 @@ export default defineConfig({
 			},
 			input: {
 				popup: resolve(__dirname, 'index.html'),
-				'service-worker': resolve(__dirname, 'src/service-worker.ts'),
 			},
 		},
 	},
