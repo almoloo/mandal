@@ -3,10 +3,6 @@
 	"description": "A browser extension to analyze Mantle dApps and smart contracts for security and trustworthiness.",
 	"version": "1.0.0",
 	"manifest_version": 3,
-	"background": {
-		"service_worker": "service-worker.js",
-		"type": "module"
-	},
 	"action": {
 		"default_popup": "index.html"
 	},
