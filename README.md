@@ -848,9 +848,7 @@ SOFTWARE.
 
 ## 📞 Support
 
--   **Issues**: [GitHub Issues](https://github.com/almoloo/mandal/issues)
--   **Discussions**: [GitHub Discussions](https://github.com/almoloo/mandal/discussions)
--   **Email**: ali.mousavi.biz@gmail.com
+-   **Email**: amousavig@icloud.com
 
 ---
 
